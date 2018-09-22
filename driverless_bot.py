@@ -37,11 +37,28 @@ def main():
         game.makeMove(rankedMoves[0][1])
 
 
-
 def evalMove(direction):
     score = random.randrange(1, 5)
 
     return (score, direction)
+
+
+def miniMax(board, maxiPlayer, depth, eval):
+    if(not depth or game.evaluateBoard(board) != 'ongoing'):
+        return eval
+
+    playerMoves, enemyMoves = game.getPossibleMoves(board)
+    children = map(lambda x: game.simulateMove(board, x, ''), playerMoves) if maxiPlayer else map(lambda x: game.simulateMove(board, '', x), enemyMoves)
+    if maxiPlayer:
+        value = -float('inf')
+        for child in children:
+            value = max(value, miniMax(child, not maxiPlayer, depth-1, eval))
+        return value
+    else:
+        value = float('inf')
+        for child in children:
+            value = min(value, miniMax(child, not maxiPlayer, depth-1, eval))
+        return value
 
 
 
