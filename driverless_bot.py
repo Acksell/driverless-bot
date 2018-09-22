@@ -45,12 +45,14 @@ def freeSpacesInDirection(board,x,y,direction):
         spaces+=1
     return spaces
 
+
+
 def main():
     while(game.awaitNextGameState() == "ongoing"):
         board = game.currentBoard
 
         playerMoves, enemyMoves = game.getPossibleMoves(board)
-        rankedMoves = list(map(lambda x: evalMove(board,x,1), playerMoves))
+        rankedMoves = list(map(lambda x: evalMove(board,x,depth=1), playerMoves))
         rankedMoves.sort(key=lambda tup: tup[0], reverse=True)
 
         print(rankedMoves)
@@ -58,13 +60,16 @@ def main():
         game.makeMove(rankedMoves[0][1])
 
 
-def evalMove(board,direction,depth):
-    #return miniMax(game.simulateMove(board,direction,board.player.dir),True,depth,simpleEval), direction
-    return simpleEval(game.simulateMove(board,direction,board.enemy.dir)),direction
+
+
+def evalMove(board,direction,depth=1):
+    return miniMax(game.simulateMove(board,direction,board.player.dir),True,depth,simpleEval), direction
+    #return simpleEval(game.simulateMove(board,direction,board.enemy.dir)),direction
+
 
 def miniMax(board, maxiPlayer, depth, eval):
     print('Recursion: ',depth)
-    if not depth or game.evaluateBoard(board) != 'ongoing':
+    if depth == 0 or game.evaluateBoard(board) != 'ongoing':
         return eval(board)
 
     playerMoves, enemyMoves = game.getPossibleMoves(board)
@@ -91,7 +96,7 @@ def simpleEval(board):
     if state == 'enemyWon' or state == 'draw':
         return -10
     else:
-        return free5/25 + 3*(free3-4)/9 - 3*(dist-3)/14 + (freeDir-3)/9
+        return 15*free5/25 + 20*free3/9 - 8*dist/14 + 5*(freeDir)/9 + 5*random.random()
 
 
 main()
