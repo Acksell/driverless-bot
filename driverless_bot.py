@@ -40,6 +40,11 @@ def main():
 def evalMove(direction):
     score = random.randrange(1, 5)
 
+    lastBoard = game.currentBoard
+    for i in range(1000):
+
+
+
     return (score, direction)
 
 
