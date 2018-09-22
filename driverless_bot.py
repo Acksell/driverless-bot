@@ -1,6 +1,9 @@
 from AlbotOnline.Snake.SnakeGame import SnakeGame
 import random
 
+game = SnakeGame()
+
+
 def getPos(board, x,y):
     return board.grid(x,y)
 
@@ -18,13 +21,28 @@ def isNotEnclosed(board,x,y):
     return sum(map(isBlocked, getNeighbors(x,y))) < 3
 
 
-game = SnakeGame()
-while(game.awaitNextGameState() == "ongoing"):
-    board = game.currentBoard
-    board.printBoard()
-    
-    # print(board.grid[x][y])
+def main():
+    while(game.awaitNextGameState() == "ongoing"):
+        board = game.currentBoard
+        board.printBoard("Current Board")
 
-    playerMoves, enemyMoves = game.getPossibleMoves(board)
-    
-    game.makeMove(random.choice(playerMoves))
+        playerMoves, enemyMoves = game.getPossibleMoves(board)
+
+        rankedMoves = list(map(evalMove, playerMoves))
+
+        rankedMoves.sort(key=lambda tup: tup[0], reverse=True)
+
+        print(rankedMoves)
+
+        game.makeMove(rankedMoves[0][1])
+
+
+
+def evalMove(direction):
+    score = random.randrange(1, 5)
+
+    return (score, direction)
+
+
+
+main()
