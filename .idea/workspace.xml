@@ -40,24 +40,24 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/driverless_bot.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="318">
-              <caret line="63" lean-forward="true" selection-end-line="81" selection-end-column="6" />
+            <state relative-caret-position="119">
+              <caret line="63" lean-forward="true" selection-start-line="63" selection-end-line="63" />
               <folding>
                 <element signature="e#0#49#0" expanded="true" />
-                <marker date="1537621024771" expanded="true" signature="1632:2023" ph="..." />
+                <marker date="1537621332515" expanded="true" signature="2745:2748" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/bot1.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="692">
-              <caret line="81" column="6" selection-start-line="81" selection-start-column="6" selection-end-line="81" selection-end-column="6" />
+            <state relative-caret-position="522">
+              <caret line="75" column="26" lean-forward="true" selection-start-line="75" selection-start-column="26" selection-end-line="75" selection-end-column="26" />
               <folding>
                 <element signature="e#0#49#0" expanded="true" />
               </folding>
@@ -80,8 +80,8 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/driverless_bot.py" />
         <option value="$PROJECT_DIR$/bot1.py" />
+        <option value="$PROJECT_DIR$/driverless_bot.py" />
       </list>
     </option>
   </component>
@@ -182,23 +182,23 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/driverless_bot.py">
+    <entry file="file://$PROJECT_DIR$/bot1.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="318">
-          <caret line="63" lean-forward="true" selection-end-line="81" selection-end-column="6" />
+        <state relative-caret-position="522">
+          <caret line="75" column="26" lean-forward="true" selection-start-line="75" selection-start-column="26" selection-end-line="75" selection-end-column="26" />
           <folding>
             <element signature="e#0#49#0" expanded="true" />
-            <marker date="1537621024771" expanded="true" signature="1632:2023" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bot1.py">
+    <entry file="file://$PROJECT_DIR$/driverless_bot.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="692">
-          <caret line="81" column="6" selection-start-line="81" selection-start-column="6" selection-end-line="81" selection-end-column="6" />
+        <state relative-caret-position="119">
+          <caret line="63" lean-forward="true" selection-start-line="63" selection-end-line="63" />
           <folding>
             <element signature="e#0#49#0" expanded="true" />
+            <marker date="1537621332515" expanded="true" signature="2745:2748" ph="..." />
           </folding>
         </state>
       </provider>
