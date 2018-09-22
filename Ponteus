@@ -1,0 +1,83 @@
+from AlbotOnline.Snake.SnakeGame import SnakeGame
+import random
+
+game = SnakeGame()
+
+
+def allowedDirs(p, grid):
+    a = []
+    if p.y != 0:
+        if grid[p.y-1][p.x] == '0':
+            a.append('up')
+    if p.y != 9:
+        if grid[p.y+1][p.x] == '0':
+            a.append('down')
+    if p.x != 0:
+        if grid[p.y][p.x-1] == '0':
+            a.append('left')
+    if p.x != 9:
+        if grid[p.y][p.x+1] == '0':
+            a.append('right')
+
+    return a
+
+
+def evalMove(direction):
+    score = 0
+
+    lastBoard = game.currentBoard
+    playerMoves, enemyMoves = game.getPossibleMoves(lastBoard)
+
+    for k in range(12):
+        for i in enemyMoves:
+            score += run_test_game(game.simulateMove(lastBoard, direction, i))
+
+    return (score, direction)
+
+
+def run_test_game(board):
+    simBoardState = game.evaluateBoard(board)
+
+    if (simBoardState == "ongoing"):
+        playerMoves, enemyMoves = game.getPossibleMoves(board)
+        simBoard = game.simulateMove(board, funk(board, 1), funk(board, 2))
+        return run_test_game(simBoard)
+    elif (simBoardState == "enemyWon"):
+        return -1
+    elif simBoardState == 'draw':
+        return 0
+    else:
+        return 1
+
+
+def funk(board, n):
+    if n == 1:
+        p = board.player
+    else:
+        p = board.enemy
+    adirs = allowedDirs(p, board.grid)
+
+    if p.dir not in adirs and adirs != []:
+        dir = random.choice(adirs)
+    else:
+        dir = p.dir
+
+    return dir
+
+
+def main():
+    while(game.awaitNextGameState() == "ongoing"):
+        board = game.currentBoard
+
+        playerMoves, enemyMoves = game.getPossibleMoves(board)
+
+        rankedMoves = list(map(evalMove, playerMoves))
+
+        rankedMoves.sort(key=lambda tup: tup[0], reverse=True)
+
+        print(rankedMoves)
+
+        game.makeMove(rankedMoves[0][1])
+
+
+main()

@@ -4,8 +4,6 @@ import random
 
 game = SnakeGame()
 
-
-
 def getPos(board, x,y):
     return board.grid(x,y)
 
@@ -14,13 +12,46 @@ def getNeighbors(x,y):
 
 def inBounds(x,y, grid_size=10):
     border = grid_size-1
-    x < 0 or y < 0 or y > border or x > border
+    return not (x < 0 or y < 0 or y > border or x > border)
 
-def isBlocked(board, x,y):
-    return board.grid(x,y) in ['X','E','P'] or not inBounds(x,y)
+def isBlocked(grid, x,y):
+    return grid[x][y] in ['X','E','P'] or not inBounds(x,y)
+
+def isFreeSpace(grid,x,y):
+    if not inBounds(x,y):
+        return False
+    return not isBlocked(grid,x,y)
+
 
 def isNotEnclosed(board,x,y):
     return sum(map(isBlocked, getNeighbors(x,y))) < 3
+
+def positions(grid):
+    enemy = (0, 0)
+    player = (0, 0)
+    for x in range(9):
+        for y in range(9):
+            if grid[x][y] == "E":
+                enemy = (x,y)
+            elif grid[x][y] == "P":
+                player = (x, y)
+    return (player, enemy)
+
+def simulate_move(board, playerMove, enemyMove):
+    print("Not implemented")
+
+def evaluateBoard(grid):
+    print("Not implemented")
+
+def getPossibleMoves(grid):
+    print("Not implemented")
+    player, enemy = positions(grid)
+    playerNeighbours = getNeighbors()
+
+
+
+
+
 
 
 
@@ -34,33 +65,87 @@ def evalMove(direction):
     if (moveeval == "enemyWon"):
         return (-1000, direction)
 
-    iterations = 15
+    print ("start calculating")
+
+    iterations = 70
     for i in range(iterations):
-        score += run_test_game(game.simulateMove(lastBoard, direction, enemyMoves[0]))
+        score += numeric_test_game(game.simulateMove(lastBoard, direction, enemyMoves[0]).grid, direction, enemyMoves[0], 1)
     for i in range(iterations):
-        score += run_test_game(game.simulateMove(lastBoard, direction, enemyMoves[1]))
+        score += numeric_test_game(game.simulateMove(lastBoard, direction, enemyMoves[1]).grid, direction, enemyMoves[1], 1)
     for i in range(iterations):
-        score += run_test_game(game.simulateMove(lastBoard, direction, enemyMoves[2]))
+        score += numeric_test_game(game.simulateMove(lastBoard, direction, enemyMoves[2]).grid, direction, enemyMoves[2], 1)
 
     return (score, direction)
 
 
-def run_test_game (board):
-    simBoardState = game.evaluateBoard(board)
-
-    if (simBoardState == "ongoing"):
-        playerMoves, enemyMoves = game.getPossibleMoves(board)
-        simBoard = game.simulateMove(board, random.choice(playerMoves), random.choice(enemyMoves))
-        return run_test_game(simBoard)
-    elif (simBoardState == "enemyWon"):
-        return -1
-    else:
-        return 1
 
 
+def numeric_test_game (grid, playerDir, enemyDir, deapth):
+    player, enemy = positions(grid)
+
+    playerX, playerY = player
+    enemyX, enemyY = enemy
+
+    allDir = ["right", "up", "left", "down"]
+
+    while True:
+
+        if deapth > 30:
+            return 0
+
+        possiblePlayerMoves = [x for x in allDir if x != playerDir]
+        possibleEnemyMoves = [x for x in allDir if x != enemyDir]
+        playerDir = random.choice(possiblePlayerMoves)
+        enemyDir = random.choice(possibleEnemyMoves)
+
+        oldPlayerX = playerX
+        oldPlayerY = playerY
 
 
-pool = Pool(processes=3)
+        oldEnemyX = enemyX
+        oldEnemyY = enemyY
+
+        if enemyDir == "right":
+            enemyX += 1
+        elif enemyDir == "left":
+            enemyX -= 1
+        elif enemyDir == "up":
+            enemyY += 1
+        else:
+            enemyY -= 1
+
+        if (isFreeSpace(grid, enemyX, enemyY)):
+            grid[enemyX][enemyY] = "E"
+            grid[oldEnemyX][oldEnemyY] = "X"
+        else:
+            return (100 / deapth)*(100 / deapth)
+
+
+
+
+        if playerDir == "right":
+            playerX += 1
+        elif playerDir == "left":
+            playerX -= 1
+        elif playerDir == "up":
+            playerY += 1
+        else:
+            playerY -= 1
+
+        if (isFreeSpace(grid, playerX, playerY)):
+            grid[playerX][playerY] = "P"
+            grid[oldPlayerX][oldPlayerY] = "X"
+        else:
+            return -(100 / deapth)*(100 / deapth)
+
+
+
+
+        deapth += 1
+
+
+
+
 
 
 def main():
@@ -69,7 +154,7 @@ def main():
 
         playerMoves, enemyMoves = game.getPossibleMoves(board)
 
-        rankedMoves = list(pool.map(evalMove, playerMoves))
+        rankedMoves = list(map(evalMove, playerMoves))
 
         rankedMoves.sort(key=lambda tup: tup[0], reverse=True)
 
@@ -78,5 +163,5 @@ def main():
         game.makeMove(rankedMoves[0][1])
 
 
-
-main()
+if __name__ == "__main__":
+    main()
