@@ -12,7 +12,7 @@ def getNeighbors(x,y):
 
 def inBounds(x,y, grid_size=10):
     border = grid_size-1
-    x < 0 or y < 0 or y > border or x > border
+    return x < 0 or y < 0 or y > border or x > border
 
 def isBlocked(board, x,y):
     return board.grid(x,y) in ['X','E','P'] or not inBounds(x,y)
@@ -41,7 +41,7 @@ def evalMove(direction):
     score = random.randrange(1, 5)
 
     lastBoard = game.currentBoard
-    for i in range(1000):
+#    for i in range(1000):
 
 
 
@@ -50,7 +50,7 @@ def evalMove(direction):
 
 def miniMax(board, maxiPlayer, depth, eval):
     if(not depth or game.evaluateBoard(board) != 'ongoing'):
-        return eval
+        return eval(board)
 
     playerMoves, enemyMoves = game.getPossibleMoves(board)
     children = map(lambda x: game.simulateMove(board, x, ''), playerMoves) if maxiPlayer else map(lambda x: game.simulateMove(board, '', x), enemyMoves)
@@ -65,6 +65,8 @@ def miniMax(board, maxiPlayer, depth, eval):
             value = min(value, miniMax(child, not maxiPlayer, depth-1, eval))
         return value
 
+def simpleEval(board):
 
 
 main()
+
